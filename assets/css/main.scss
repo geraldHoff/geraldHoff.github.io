@@ -41,3 +41,137 @@
     "vendor/font-awesome/solid",
     "vendor/font-awesome/brands"
 ;
+
+// ============================================
+// Modal-style dark terminal theme overrides
+// ============================================
+
+// -- Load fonts (add to your <head> in _includes/head.html or similar):
+// <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+$bg:         #0c0c0c;
+$bg-surface: #161616;
+$bg-sidebar: #111111;
+$text:       #e0e0e0;
+$text-muted: #888888;
+$accent:     #4ade80;
+$border:     #222222;
+$mono:       'JetBrains Mono', 'Fira Code', monospace;
+
+body {
+  background-color: $bg !important;
+  color: $text !important;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+// -- Headings: monospace terminal feel
+h1, h2, h3, h4, h5, h6 {
+  font-family: $mono !important;
+  color: #ffffff !important;
+}
+
+h2 {
+  border-bottom: 1px solid $border;
+  padding-bottom: 0.5rem;
+}
+
+// -- Links: green accent
+a {
+  color: $accent !important;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+
+  &:hover {
+    color: lighten($accent, 10%) !important;
+    border-bottom-color: $accent;
+  }
+}
+
+// -- Navbar / header
+nav, .navbar, header {
+  background-color: $bg !important;
+  border-bottom: 1px solid $border !important;
+
+  a {
+    color: $text-muted !important;
+    &:hover, &.active {
+      color: $accent !important;
+    }
+  }
+}
+
+// -- Sidebar (if your theme has one)
+.sidebar, aside, nav.sidebar {
+  background-color: $bg-sidebar !important;
+  border-right: 1px solid $border !important;
+  font-family: $mono;
+  font-size: 0.85rem;
+}
+
+// -- Code blocks: terminal style
+code {
+  font-family: $mono !important;
+  background: $bg-surface !important;
+  color: $accent !important;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+
+pre {
+  background: $bg-surface !important;
+  border: 1px solid $border !important;
+  border-radius: 6px;
+  padding: 1.25rem;
+
+  code {
+    color: $text !important;
+    background: none !important;
+  }
+}
+
+// -- Cards, panels, content wrappers
+.card, .post, .page-content, .content, article, main {
+  background-color: $bg !important;
+  color: $text !important;
+}
+
+// -- Footer
+footer {
+  background-color: $bg !important;
+  border-top: 1px solid $border !important;
+  color: $text-muted !important;
+}
+
+// -- Buttons (CTA style)
+.btn-primary, .btn {
+  background-color: $accent !important;
+  color: #000 !important;
+  font-family: $mono;
+  font-weight: 600;
+  border: none !important;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: lighten($accent, 8%) !important;
+  }
+}
+
+// -- Tables
+table {
+  border-color: $border !important;
+  th { background: $bg-surface !important; color: #fff !important; }
+  td { border-color: $border !important; }
+}
+
+// -- Inputs
+input, textarea, select {
+  background-color: $bg-surface !important;
+  color: $text !important;
+  border: 1px solid $border !important;
+}
+
+// -- Scrollbar (Chromium/WebKit)
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: $bg; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
