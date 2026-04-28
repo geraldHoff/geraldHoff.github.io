@@ -43,135 +43,293 @@
 ;
 
 // ============================================
-// Modal-style dark terminal theme overrides
+// Terminal / Hacker dark theme
+// Inspired by Modal GPU Glossary (modal.com/gpu-glossary)
 // ============================================
 
-// -- Load fonts (add to your <head> in _includes/head.html or similar):
-// <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+$bg:          #0c0c0c;
+$bg-surface:  #161616;
+$bg-sidebar:  #111111;
+$text:        #e0e0e0;
+$text-muted:  #888888;
+$accent:      #4ade80;
+$accent-dark: #22c55e;
+$accent-light:#86efac;
+$border:      #222222;
+$border-soft: #333333;
+$mono:        'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+$body-font:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-$bg:         #0c0c0c;
-$bg-surface: #161616;
-$bg-sidebar: #111111;
-$text:       #e0e0e0;
-$text-muted: #888888;
-$accent:     #4ade80;
-$border:     #222222;
-$mono:       'JetBrains Mono', 'Fira Code', monospace;
+// ── Override CSS custom properties ──────────────────────────────────────────
+// Target both :root (default/light state) AND html[data-theme="dark"]
+// so the terminal palette applies regardless of the theme toggle state.
 
-body {
-  background-color: $bg !important;
-  color: $text !important;
-  font-family: 'Inter', -apple-system, sans-serif;
+:root,
+html[data-theme="dark"] {
+  --global-base-color:                 #{$accent};
+  --global-bg-color:                   #{$bg};
+  --global-footer-bg-color:            #{$bg};
+  --global-border-color:               #{$border};
+  --global-dark-border-color:          #{$border-soft};
+  --global-code-background-color:      #{$bg-surface};
+  --global-code-text-color:            #{$accent};
+  --global-fig-caption-color:          #{$text-muted};
+  --global-link-color:                 #{$accent};
+  --global-link-color-hover:           #{$accent-light};
+  --global-link-color-visited:         #{$accent-dark};
+  --global-masthead-link-color:        #{$text};
+  --global-masthead-link-color-hover:  #{$accent};
+  --global-text-color:                 #{$text};
+  --global-text-color-light:           #{$text-muted};
+  --global-thead-color:                #{$bg-surface};
+  --global-toc-bg-color:               #{$bg-sidebar};
 }
 
-// -- Headings: monospace terminal feel
+// ── Base ─────────────────────────────────────────────────────────────────────
+
+body {
+  font-family: $body-font;
+  background-color: $bg;
+  color: $text;
+}
+
+// ── Typography ───────────────────────────────────────────────────────────────
+
 h1, h2, h3, h4, h5, h6 {
-  font-family: $mono !important;
-  color: #ffffff !important;
+  font-family: $mono;
+  color: #ffffff;
 }
 
 h2 {
   border-bottom: 1px solid $border;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
 }
 
-// -- Links: green accent
-a {
-  color: $accent !important;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.15s;
+// ── Links ─────────────────────────────────────────────────────────────────────
 
-  &:hover {
-    color: lighten($accent, 10%) !important;
-    border-bottom-color: $accent;
+a {
+  color: $accent;
+  text-decoration: none;
+  transition: color 0.15s ease;
+
+  &:hover  { color: $accent-light; }
+  &:visited { color: $accent-dark; }
+}
+
+// ── Masthead (top nav bar) ────────────────────────────────────────────────────
+
+.masthead {
+  background-color: $bg !important;
+
+  &::after { background: $border; }
+}
+
+.greedy-nav {
+  background: $bg;
+
+  button {
+    background-color: $bg;
+    color: $text;
+  }
+
+  .hidden-links {
+    background: $bg-surface;
+    border-color: $border;
+  }
+
+  // Green underline animation on hover
+  .visible-links a::before {
+    background: $accent;
   }
 }
 
-// -- Navbar / header
-nav, .navbar, header {
-  background-color: $bg !important;
-  border-bottom: 1px solid $border !important;
+// Active nav item — green accent underline
+.masthead__menu-item.selected a {
+  color: $accent !important;
+  border-bottom-color: $accent !important;
+  font-family: $mono;
+}
+
+// ── Sidebar author panel ──────────────────────────────────────────────────────
+
+.sidebar {
+  background-color: $bg;
+
+  h2, h3, h4, h5, h6 { font-family: $mono; }
+
+  // Active sidebar nav link: green left border
+  .nav__list .active {
+    background: rgba($accent, 0.10);
+    color: $accent;
+    border-left: 3px solid $accent;
+    border-radius: 0 4px 4px 0;
+    margin-left: 0;
+    padding-left: 0.5em;
+  }
+}
+
+.author__avatar img { border-color: $border; }
+
+.author__urls {
+  background: $bg-surface;
+  border-color: $border;
 
   a {
-    color: $text-muted !important;
-    &:hover, &.active {
-      color: $accent !important;
-    }
+    color: $text;
+    &:hover { color: $accent; }
   }
 }
 
-// -- Sidebar (if your theme has one)
-.sidebar, aside, nav.sidebar {
-  background-color: $bg-sidebar !important;
-  border-right: 1px solid $border !important;
-  font-family: $mono;
-  font-size: 0.85rem;
+// ── Code blocks ───────────────────────────────────────────────────────────────
+
+tt, code, kbd, samp {
+  font-family: $mono !important;
 }
 
-// -- Code blocks: terminal style
-code {
-  font-family: $mono !important;
-  background: $bg-surface !important;
-  color: $accent !important;
-  padding: 0.15em 0.4em;
-  border-radius: 3px;
+// Inline code
+a > code, figcaption > code, li > code, p > code, td > code {
+  background: $bg-surface;
+  color: $accent;
+  border-color: $border;
 }
 
 pre {
   background: $bg-surface !important;
-  border: 1px solid $border !important;
+  border: 1px solid $border;
   border-radius: 6px;
   padding: 1.25rem;
 
   code {
-    color: $text !important;
-    background: none !important;
+    color: $text;
+    background: none;
   }
 }
 
-// -- Cards, panels, content wrappers
-.card, .post, .page-content, .content, article, main {
-  background-color: $bg !important;
-  color: $text !important;
+// ── Table of Contents ─────────────────────────────────────────────────────────
+
+.toc {
+  background: $bg-sidebar !important;
+  border-color: $border;
+
+  .nav__title {
+    background: transparent !important;
+    color: $accent;
+    font-family: $mono;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
 }
 
-// -- Footer
-footer {
-  background-color: $bg !important;
-  border-top: 1px solid $border !important;
-  color: $text-muted !important;
-}
-
-// -- Buttons (CTA style)
-.btn-primary, .btn {
-  background-color: $accent !important;
-  color: #000 !important;
-  font-family: $mono;
-  font-weight: 600;
-  border: none !important;
-  border-radius: 6px;
+.toc__menu a {
+  color: $text-muted;
+  border-bottom-color: $border;
 
   &:hover {
-    background-color: lighten($accent, 8%) !important;
+    color: $accent !important;
+    background: rgba($accent, 0.07) !important;
   }
 }
 
-// -- Tables
+// ── Tables ────────────────────────────────────────────────────────────────────
+
 table {
-  border-color: $border !important;
-  th { background: $bg-surface !important; color: #fff !important; }
-  td { border-color: $border !important; }
+  border-color: $border;
+
+  th {
+    background: $bg-surface;
+    color: $accent;
+    border-color: $border;
+  }
+
+  td { border-color: $border; }
 }
 
-// -- Inputs
-input, textarea, select {
-  background-color: $bg-surface !important;
-  color: $text !important;
-  border: 1px solid $border !important;
+// ── Blockquote ────────────────────────────────────────────────────────────────
+
+blockquote {
+  border-left-color: $accent;
+  color: $text-muted;
 }
 
-// -- Scrollbar (Chromium/WebKit)
-::-webkit-scrollbar { width: 8px; }
+// ── Footer ────────────────────────────────────────────────────────────────────
+
+.page__footer {
+  background-color: $bg !important;
+  border-top-color: $border;
+  color: $text-muted;
+
+  a {
+    color: $text-muted;
+    &:hover { color: $accent; text-decoration: none; }
+  }
+
+  .fas, .fab, .far, .fal { color: $text-muted; }
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+
+.btn {
+  font-family: $mono;
+
+  &--primary {
+    background: $accent !important;
+    color: #000 !important;
+    border-color: $accent !important;
+    font-weight: 600;
+
+    &:hover {
+      background: $accent-light !important;
+      border-color: $accent-light !important;
+    }
+  }
+
+  &--inverse {
+    color: $accent;
+    border-color: $accent;
+    background: transparent;
+
+    &:hover {
+      background: rgba($accent, 0.12);
+      color: $accent-light;
+    }
+  }
+}
+
+// ── Archive items ─────────────────────────────────────────────────────────────
+
+.archive__item-title {
+  font-family: $mono;
+
+  a {
+    color: #ffffff;
+    &:hover { color: $accent; }
+  }
+}
+
+.archive__item-excerpt { color: $text-muted; }
+
+// ── Forms / inputs ────────────────────────────────────────────────────────────
+
+input[type="text"], input[type="email"], input[type="search"],
+textarea, select {
+  background-color: $bg-surface;
+  color: $text;
+  border: 1px solid $border;
+
+  &:focus {
+    border-color: $accent;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($accent, 0.2);
+  }
+}
+
+// ── Scrollbar (Chromium / WebKit) ─────────────────────────────────────────────
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: $bg; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb {
+  background: $border-soft;
+  border-radius: 4px;
+  &:hover { background: #444; }
+}
